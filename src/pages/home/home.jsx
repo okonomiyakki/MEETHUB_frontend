@@ -1,4 +1,4 @@
-import Homebody from "../../components/homebody/homeBody";
+import Homebody from "../../components/homeBody/homeBody";
 import styles from './home.module.scss'
 
 export function Home() {
