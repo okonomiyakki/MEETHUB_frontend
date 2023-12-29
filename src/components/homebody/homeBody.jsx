@@ -11,7 +11,6 @@ export function HomeBody(props) {
           <p>어디서 만날지 고민될 때,</p>
           <p>좋은 모임 장소를 추천받고 싶을 때</p>
         </div>
-        {/* <img src={Main} max-width="500px" /> */}
 
         <div>
           <Link to="/map" className={styles.home_d2}>
@@ -19,10 +18,7 @@ export function HomeBody(props) {
             <span>출발지 입력하러 가기 </span>
           </Link>
         </div>
-
       </div>
-      <a href="http://www.freepik.com">Designed by stories / Freepik</a>
-
     </div>
   )
 }

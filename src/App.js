@@ -2,7 +2,7 @@ import './App.scss';
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from './pages/home/home';
-import { Map } from './pages/map';
+import { Map } from './pages/map/map';
 
 function App() {
     function setScreenSize() {

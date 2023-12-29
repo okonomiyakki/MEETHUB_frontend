@@ -5,9 +5,6 @@ export function SearhPlace() {
 
   return (
     <div>
-      <Link to="/">
-        <span>처음으로 </span>
-      </Link>
     </div>
   )
 }

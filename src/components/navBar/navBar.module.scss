@@ -1,0 +1,29 @@
+/* navBar.module.scss */
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 300px;
+  background-color: #fcf2cc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.leftContainer img {
+  height: 45px;
+  /* 원하는 높이 설정 */
+}
+
+.rightContainer span {
+  font-size: 1rem;
+  color: #333333;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid #333333;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+
+  &:hover {
+    background-color: rgb(251, 180, 90);
+    color: #FFF2DD;
+  }
+}
