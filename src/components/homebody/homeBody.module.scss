@@ -1,0 +1,82 @@
+@font-face {
+  font-family: 'BMDOHYEON';
+  src: url('../../font/BMDOHYEON_ttf.ttf') format('truetype');
+}
+
+.home_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0;
+  flex-wrap: wrap;
+  flex-grow: 1;
+}
+
+.intro {
+  font-family: 'BMDOHYEON';
+  color: #616161;
+  width: 100%;
+  font-size: 20px;
+  margin-bottom: 50px;
+  background-color: #FFF2DD;
+  display: flex;
+  flex-direction: row; //column;
+  justify-content: space-evenly; //center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  flex-wrap: wrap;
+}
+
+.intro>p {
+  margin: 17px;
+  font-weight: 60;
+  //width: 700px;
+}
+
+.intro>img {
+  padding-top: 0;
+}
+
+.intro2 {
+  padding: 100px 50px 90px 50px;
+  width: auto;
+}
+
+.title {
+  font-size: 40px;
+  color: black;
+  padding-bottom: 30px;
+  //width: 700px;
+}
+
+.home_d2 {
+  display: flex;
+  padding: 40px 50px;
+  font-size: 16px;
+  border-radius: 15px;
+  width: 600px;
+}
+
+.home_d2>span {
+  font-size: 25px;
+  margin-top: 20px;
+  // color: black;
+  // color: #616161;
+}
+
+.home_d2 {
+  flex-direction: column;
+  background-image: url(./map_img.jpg);
+  background-size: cover;
+  color: #616161;
+  text-decoration-line: none;
+}
+
+
+.home_d2:hover {
+  color: black;
+  box-shadow: 0 0 2px .07rem rgb(251, 180, 90);
+}
