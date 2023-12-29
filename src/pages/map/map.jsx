@@ -1,11 +1,11 @@
 import NavBar from '../../components/navBar/navBar'
-import SearchPlace from '../../components/map/serchplace/searchPlace'
+import LandingMap from '../../components/map/landingMap/landingMap'
 
 export function Map() {
   return (
     <div id="MapPage">
       <NavBar />
-      <SearchPlace />
+      <LandingMap />
     </div>
   )
 }
