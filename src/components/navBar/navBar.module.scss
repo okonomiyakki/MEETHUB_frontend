@@ -1,14 +1,18 @@
-/* navBar.module.scss */
 .container {
   display: flex;
   height: 35px;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 300px;
   background-color: #fcf2cc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-bottom: 3px solid #ddd;
-  /* 아래쪽에 1px 높이의 회색 선 추가 */
+  padding: 1rem 300px;
+  /* 초기값 */
+
+  @media (max-width: 768px) {
+    padding: 1rem 20px;
+    /* 화면 너비가 768px 이하일 때 각각 20px로 변경 */
+  }
 }
 
 .leftContainer img {
