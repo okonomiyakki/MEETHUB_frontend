@@ -10,47 +10,6 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
   let [addLatlng, setAddLatlng] = useState([]);     // 추가 좌표
   let [Name, setName] = useState([]);               // 입력된 출발지 이름
   let [addName, setAddName] = useState([]);         // 추가된 출발지 이름
-  let [hotPlace, setHotPlace] = useState([]);       // 추천 매장
-  let mmm = [];           // 소요시간 전체
-  let www = [];           // 가중치 추가된
-  let ggg = [];           // 가중치 값
-  let avgTime = [];       // 최소 소요시간
-  let endStation = [];    // 도착역
-
-  // useEffect(() => {
-  //   const container = document.getElementById('map'),
-  //     mapOption = {
-  //       center: new kakao.maps.LatLng(37.566826004661, 126.978652258309),
-  //       level: 9
-  //     };
-  //   const map = new kakao.maps.Map(container, mapOption);
-
-
-  //   if (lat && lng) {
-  //     const coords = new kakao.maps.LatLng(lat, lng);
-  //     const marker = new kakao.maps.Marker({
-  //       position: coords,
-  //       map: map,
-  //     });
-
-  //     map.setCenter(coords);
-  //   }
-  //   // let searchMarker = new kakao.maps.Marker({
-  //   //   map: map,
-  //   //   position: coords
-  //   // });
-
-  //   // let infowindow = new kakao.maps.InfoWindow({
-  //   //   content: `<div style="width:150px;text-align:center;padding:6px 0;">` + name + `</div>`,
-  //   //   clickable: true
-  //   // });
-
-  //   // infowindow.open(map, searchMarker);
-
-  //   // map.setCenter(coords);
-
-
-  // }, [lat, lng]);
 
   useEffect(() => {
     if (lat) {
@@ -100,17 +59,17 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
       let new_addLoc = [...addLoc];
       new_addLoc.unshift(intext);
       setAddLoc(new_addLoc);
-      // console.log("추가한 주소명", new_addLoc);
+      console.log("추가한 주소명", new_addLoc);
 
       let new_addLatlng = [...addLatlng];
       new_addLatlng.unshift(latlng[0]);
       setAddLatlng(new_addLatlng);
-      // console.log("추가한 좌표값", new_addLatlng);
+      console.log("추가한 좌표값", new_addLatlng);
 
       let new_addName = [...addName];
       new_addName.unshift(name);
       setAddName(new_addName);
-      // console.log("추가한 장소명", new_addName);
+      console.log("추가한 장소명", new_addName);
 
       // let new_index = [...index];
       // new_index.unshift(new_addLoc.length - new_addLoc.indexOf(intext));
