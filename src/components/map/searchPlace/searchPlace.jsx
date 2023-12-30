@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import searchBtn from './search.png'
 import myLocationBtn from './myLocation.png'
 import styles from './searchPlace.module.scss';
-import AddPlace from '../addPlace/addPlace'
+import LandingMap from '../landingMap/landingMap';
 
 const { kakao } = window;
 
-export function SearhPlace() {
+export function SearchPlace() {
   const [InputPlace, setInputPlace] = useState('')
   const [Place, setPlace] = useState('') //지도에 반영
   let [clickPlace, setClickPlace] = useState([]);
@@ -18,14 +18,14 @@ export function SearhPlace() {
     // let sta_wrap = document.querySelector('#sta_wrap');
     // sta_wrap.style.display = "none";
 
-    // let container = document.getElementById('myMap'),
-    //   mapOption = {
-    //     center: new kakao.maps.LatLng(37.566826004661, 126.978652258309),
-    //     level: 9
-    //   };
+    let container = document.getElementById('map'),
+      mapOption = {
+        center: new kakao.maps.LatLng(37.566826004661, 126.978652258309),
+        level: 9
+      };
 
-    // // 지도를 생성합니다    
-    // let map = new kakao.maps.Map(container, mapOption);
+    // 지도를 생성합니다    
+    let map = new kakao.maps.Map(container, mapOption);
 
     const ps = new kakao.maps.services.Places();
 
@@ -160,6 +160,7 @@ export function SearhPlace() {
         el.removeChild(el.lastChild);
       }
     }
+
   }, [Place]);
 
   const onChange = (e) => {        //엔터누르면 현재위치로 검색안되게하기
@@ -235,7 +236,7 @@ export function SearhPlace() {
   return (
     <div id={styles.searchContainer}>
       <div id={styles.searchWrap}>
-        <AddPlace searchPlace={clickPlace} InputPlace={InputPlace} lat={lat} lng={lng} name={name} />
+        <LandingMap searchPlace={clickPlace} InputPlace={InputPlace} lat={lat} lng={lng} name={name} />
         <div id={styles.searchBox} className={styles.bg_white}>
           <div className={styles.option}>
             <div>
@@ -244,7 +245,7 @@ export function SearhPlace() {
                   style={{
                     margin: '5px'
                   }}><img src={myLocationBtn} width='25px'></img></button>
-                <input type="text" placeholder=' 출발지를 입력해 주세요!' onChange={onChange} value={InputPlace} id="keyword" size="30"></input>
+                <input type="text" placeholder=' 출발지를 키워드로 검색해보세요!' onChange={onChange} value={InputPlace} id="keyword" size="30"></input>
                 <button className={styles.searchBtn} type="button" onClick={() => { er() }}>지우기</button>
                 <button className={styles.searchBtn} type="submit" id="ser"><img src={searchBtn} width="18px"></img></button>
               </form>
@@ -259,5 +260,5 @@ export function SearhPlace() {
   )
 }
 
-export default SearhPlace
+export default SearchPlace
 
