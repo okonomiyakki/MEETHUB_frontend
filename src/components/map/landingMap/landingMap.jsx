@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import styles from './landingMap.module.scss';
+import axios from 'axios';
+import { generateCenter } from '../../../utils/generateCenter';
 
 const { kakao } = window;
 
 export function LandingMap({ searchPlace, lat, lng, name }) {
-  let [location, setLocation] = useState([]);       // 입력된 주소
-  let [addLoc, setAddLoc] = useState([]);           // 추가된 주소
-  let [latlng, setLatlng] = useState([]);           // 입력 좌표
-  let [addLatlng, setAddLatlng] = useState([]);     // 추가 좌표
-  let [Name, setName] = useState([]);               // 입력된 출발지 이름
-  let [addName, setAddName] = useState([]);         // 추가된 출발지 이름
+  let [location, setLocation] = useState([]);       // 입력 출발지 주소
+  let [addLocation, setAddLocation] = useState([]); // 추가 출발지 주소
+  let [latlng, setLatlng] = useState([]);           // 입력 출발지 좌표
+  let [addLatlng, setAddLatlng] = useState([]);     // 추가 출발지 좌표
+  let [Name, setName] = useState([]);               // 입력 출발지 이름
+  let [addName, setAddName] = useState([]);         // 추가 출발지 이름
 
   useEffect(() => {
     if (lat) {
@@ -54,34 +56,55 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
 
   }, [searchPlace, lat, lng, name])
 
-  const buttonAdd = (intext) => {
-    if ((location.includes(intext) & !addLoc.includes(intext)) && intext != "") {
-      let new_addLoc = [...addLoc];
-      new_addLoc.unshift(intext);
-      setAddLoc(new_addLoc);
-      console.log("추가한 주소명", new_addLoc);
+  const addStartPoints = (intext) => {
+    if ((location.includes(intext) & !addLocation.includes(intext)) && intext != "") {
+      let new_addLocation = [...addLocation];
+      new_addLocation.push(intext);
+      setAddLocation(new_addLocation);
+      console.log("추가한 주소명", new_addLocation);
 
       let new_addLatlng = [...addLatlng];
-      new_addLatlng.unshift(latlng[0]);
+      new_addLatlng.push(latlng[0]);
       setAddLatlng(new_addLatlng);
       console.log("추가한 좌표값", new_addLatlng);
 
       let new_addName = [...addName];
-      new_addName.unshift(name);
+      new_addName.push(name);
       setAddName(new_addName);
       console.log("추가한 장소명", new_addName);
-
-      // let new_index = [...index];
-      // new_index.unshift(new_addLoc.length - new_addLoc.indexOf(intext));
-      // setIndex(new_index);
-      // console.log("추가한 인덱스값", new_index);
     }
+
     else {
       alert('장소 클릭 후 눌러주세요.');
       return;
     }
   }
 
+  const deleteStartPoints = (i) => {
+    let updatedLocation = [...addLocation.slice(0, i), ...addLocation.slice(i + 1)];
+    let updatedLatlng = [...addLatlng.slice(0, i), ...addLatlng.slice(i + 1)];
+    let updatedName = [...addName.slice(0, i), ...addName.slice(i + 1)];
+
+    setAddLocation(updatedLocation);
+    setAddLatlng(updatedLatlng)
+    setAddName(updatedName);
+  }
+
+  const findEndPoint = async () => {
+    try {
+      const data = {
+        centerLat: generateCenter(addLatlng).centerLat,
+        centerLng: generateCenter(addLatlng).centerLng
+      }
+
+      const response = await axios.post('http://localhost:5500/routes', data);
+
+      console.log('Server response:', response.data);
+
+    } catch (error) {
+      console.error('Error making HTTP request:', error.message);
+    }
+  };
 
 
   return (
@@ -93,26 +116,18 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
         <div id={styles.addBox} className={styles.bg_white}>
           <div className={styles.addOption}>
             {/* <button type="button" onClick={() => reload()}>다시하기</button> */}
-            {/* <button id={styles.addBtn} className={styles.addBtn} onClick={() => start(addLatlng, addName)}>중간 장소 찾기</button> */}
-            <button className={styles.addBtn} onClick={() => buttonAdd(searchPlace)}>출발지 추가</button>
+            <button id={styles.addBtn} className={styles.addBtn} onClick={() => findEndPoint()}>중간 장소 찾기</button>
+            <button className={styles.addBtn} onClick={() => addStartPoints(searchPlace)}>출발지 추가</button>
+            <hr></hr>
+            <button className={styles.addLine}>출발지 목록</button>
             <div>{addName.map((a, i) => (
               <div key={i} className={styles.submitAddress}>
                 <div>{a}</div>
-                <button className={styles.deleteBtn} onClick={() => {
-                  let copy = [...addLoc];
-                  let copy2 = [...addLatlng];
-                  let copy3 = [...addName];
-                  copy.splice(i, 1)
-                  copy2.splice(i, 1)
-                  copy3.splice(i, 1)
-                  setAddLoc(copy);
-                  setAddLatlng(copy2)
-                  setAddName(copy3);
-                }}>X</button>
+                <button className={styles.deleteBtn} onClick={() => deleteStartPoints(i)}>X</button>
               </div>))}
             </div>
           </div>
-          <hr></hr>
+          {/* <hr></hr> */}
         </div>
         {/* <div id={styles.stationBox} className={styles.bg_white}>
         </div> */}
