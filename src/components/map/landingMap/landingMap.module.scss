@@ -52,6 +52,15 @@
   align-items: center;
 }
 
+.addOption hr {
+  display: block;
+  width: 260px;
+  height: 1px;
+  border: 0;
+  border-top: 2px solid #9e9d9d;
+  margin: 3px 0;
+}
+
 #addBtn {
   background-color: rgb(233, 124, 56);
 }
@@ -80,6 +89,24 @@
   // box-shadow: none !important;
   color: white;
   box-shadow: 0 0 2px .07rem #616161; //rgb(251, 180, 90);
+}
+
+.addLine {
+  // height: 20px;
+  width: 250px;
+  font-size: large;
+  margin: 5px auto; //**
+  padding: 0 5px; //**
+}
+
+.addLine {
+  // background-color: #5f523b;
+  background-color: #64491a;
+  border: 1px solid rgb(251, 180, 90);
+  border-radius: 15px;
+  height: 22px;
+  box-shadow: none;
+  color: white
 }
 
 .submitAddress {
