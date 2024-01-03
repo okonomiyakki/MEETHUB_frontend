@@ -91,6 +91,20 @@
   box-shadow: 0 0 2px .07rem #616161; //rgb(251, 180, 90);
 }
 
+.disabledBtn {
+  background-color: gray;
+  border: 1px solid gray;
+  color: white;
+  cursor: not-allowed;
+}
+
+.disabledBtn:hover {
+  background-color: gray;
+  border: 1px solid gray;
+  color: white;
+  box-shadow: none;
+}
+
 .addLine {
   // height: 20px;
   width: 250px;

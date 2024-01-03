@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styles from './landingMap.module.scss';
 import axios from 'axios';
 import { generateCenter } from '../../../utils/generateCenter';
+import seoulPolyLine from './seoul.json'
 
 const { kakao } = window;
 
@@ -93,6 +94,7 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
   const findEndPoint = async () => {
     try {
       const data = {
+        startLatlng: addLatlng,
         centerLat: generateCenter(addLatlng).centerLat,
         centerLng: generateCenter(addLatlng).centerLng
       }
@@ -106,6 +108,90 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
     }
   };
 
+  const submitStartPoints = () => {
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+      mapOption = {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+        level: 9 // 지도의 확대 레벨
+      };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption),
+      customOverlay = new kakao.maps.CustomOverlay({}),
+      infowindow = new kakao.maps.InfoWindow({ removable: false });
+
+    const displayArea = (areas) => {
+      areas.forEach((area) => {
+        const path = area.geometry.coordinates[0].map(([lng, lat]) => new kakao.maps.LatLng(lat, lng));
+        let isMouseOver = false;
+
+        // 다각형을 생성합니다 
+        var polygon = new kakao.maps.Polygon({
+          map: map, // 다각형을 표시할 지도 객체
+          path: path,
+          strokeWeight: 2,
+          strokeColor: '#004c80',
+          strokeOpacity: 0.8,
+          fillColor: '#fff',
+          fillOpacity: 0.7
+        });
+
+        // 다각형에 mouseover 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 변경합니다 
+        // 지역명을 표시하는 커스텀오버레이를 지도위에 표시합니다
+        kakao.maps.event.addListener(polygon, 'mouseover', function (mouseEvent) {
+          isMouseOver = true;
+          polygon.setOptions({ fillColor: '#09f' });
+
+          // customOverlay.setContent('<div class="area">' + area.name + '</div>');
+
+          customOverlay.setPosition(mouseEvent.latLng);
+          customOverlay.setMap(map);
+        });
+
+        // 다각형에 mousemove 이벤트를 등록하고 이벤트가 발생하면 커스텀 오버레이의 위치를 변경합니다 
+        kakao.maps.event.addListener(polygon, 'mousemove', function (mouseEvent) {
+          if (isMouseOver) customOverlay.setPosition(mouseEvent.latLng);
+        });
+
+        // 다각형에 mouseout 이벤트를 등록하고 이벤트가 발생하면 폴리곤의 채움색을 원래색으로 변경합니다
+        // 커스텀 오버레이를 지도에서 제거합니다 
+        kakao.maps.event.addListener(polygon, 'mouseout', function () {
+          isMouseOver = false;
+          polygon.setOptions({ fillColor: '#fff' });
+          customOverlay.setMap(null);
+        });
+
+        // 다각형에 click 이벤트를 등록하고 이벤트가 발생하면 다각형의 이름과 면적을 인포윈도우에 표시합니다 
+        kakao.maps.event.addListener(polygon, 'click', function (mouseEvent) {
+          var content = '<div class="info">' +
+            '   <div class="title" style="width: 100%; font-size: 16px; text-align: center;">' +
+            '       <button id="' + styles.addBtn + '" class="' + styles.addBtn + '">' +
+            area.name + ' 에서 중간 장소 찾기' +
+            '       </button>' +
+            '   </div>' +
+            '</div>';
+
+          infowindow.setContent(content);
+          infowindow.setPosition(mouseEvent.latLng);
+          infowindow.setMap(map);
+
+          let findEndPointBtn = document.getElementById(styles.addBtn)
+
+          findEndPointBtn.addEventListener('click', function () {
+            findEndPoint()
+          })
+        });
+      });
+    }
+
+    const areas = seoulPolyLine.features.map((feature) => {
+      const name = feature.properties.SIG_KOR_NM;
+      const geometry = feature.geometry;
+
+      return { name, geometry };
+    });
+
+    displayArea(areas);
+  }
 
   return (
     <>
@@ -116,16 +202,24 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
         <div id={styles.addBox} className={styles.bg_white}>
           <div className={styles.addOption}>
             {/* <button type="button" onClick={() => reload()}>다시하기</button> */}
-            <button id={styles.addBtn} className={styles.addBtn} onClick={() => findEndPoint()}>중간 장소 찾기</button>
+            {/* <button id={styles.addBtn} className={styles.addBtn} onClick={() => findEndPoint()}>중간 장소 찾기</button> */}
             <button className={styles.addBtn} onClick={() => addStartPoints(searchPlace)}>출발지 추가</button>
-            <hr></hr>
-            <button className={styles.addLine}>출발지 목록</button>
+            {/* <hr></hr> */}
+            {/* <button className={styles.addLine}>출발지 목록</button> */}
             <div>{addName.map((a, i) => (
               <div key={i} className={styles.submitAddress}>
                 <div>{a}</div>
                 <button className={styles.deleteBtn} onClick={() => deleteStartPoints(i)}>X</button>
               </div>))}
             </div>
+            <hr></hr>
+            {/* <button className={styles.addBtn} onClick={() => submitStartPoints()}>출발지 저장</button> */}
+            {addName.length >= 2 ? (
+              <button className={styles.addBtn} onClick={() => submitStartPoints()}>출발지 저장</button>
+            ) : (
+              <button className={`${styles.addBtn} ${styles.disabledBtn}`} disabled>출발지 저장</button>
+            )}
+            {/* <button id={styles.addBtn} className={styles.addBtn} onClick={() => findEndPoint()}>중간 장소 찾기</button> */}
           </div>
           {/* <hr></hr> */}
         </div>
