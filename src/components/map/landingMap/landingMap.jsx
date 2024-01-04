@@ -251,7 +251,7 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
           var content = '<div class="info">' +
             '   <div class="title" style="width: 100%; font-size: 16px; text-align: center;">' +
             '       <button id="' + styles.addBtn + '" class="' + styles.addBtn + '">' +
-            area.name + ' 에서 중간 장소 찾기' +
+            area.name + ' 에서 만나기' +
             '       </button>' +
             '   </div>' +
             '</div>';
@@ -319,7 +319,12 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
           <div className={styles.addOption}>
             {/* <button type="button" onClick={() => reload()}>다시하기</button> */}
             {/* <button id={styles.addBtn} className={styles.addBtn} onClick={() => findEndPoint()}>중간 장소 찾기</button> */}
-            <button className={styles.addBtn} onClick={() => addStartPoints(searchPlace)}>출발지 추가하기</button>
+            {/* <button className={styles.addBtn} onClick={() => addStartPoints(searchPlace)}>출발지 추가하기</button> */}
+            {addName.length < 5 ? (
+              <button className={styles.addBtn} onClick={() => addStartPoints(searchPlace)}>출발지 추가하기</button>
+            ) : (
+              <button className={`${styles.addBtn} ${styles.disabledBtn}`} disabled>출발지 개수는 최대 5개 입니다</button>
+            )}
             {/* <hr></hr> */}
             {/* <button className={styles.addLine}>출발지 목록</button> */}
             <div>{addName.map((a, i) => (
