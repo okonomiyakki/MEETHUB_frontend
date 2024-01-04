@@ -21,7 +21,7 @@ export function SearchPlace() {
     let container = document.getElementById('map'),
       mapOption = {
         center: new kakao.maps.LatLng(37.566826004661, 126.978652258309),
-        level: 9
+        level: 7
       };
 
     // 지도를 생성합니다    

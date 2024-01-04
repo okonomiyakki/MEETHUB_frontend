@@ -16,48 +16,54 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
   let [addName, setAddName] = useState([]);         // 추가 출발지 이름
   let [region, setRegion] = useState([]);       // 선택 지역구 이름
   let [station, setStation] = useState([]); // 선택 지하철 정보
-
+  const [state, setState] = useState({
+    // 지도의 초기 위치
+    center: { lat: 37.566826004661, lng: 126.978652258309 },
+    // 지도 위치 변경시 panto를 이용할지(부드럽게 이동)
+    isPanto: true,
+  });
 
   useEffect(() => {
-    if (lat) {
-      let container = document.getElementById('map'),
-        mapOption = {
-          center: new kakao.maps.LatLng(37.566826004661, 126.978652258309),
-          level: 6
-        };
+    // if (lat) {
 
-      let map = new kakao.maps.Map(container, mapOption);
+    let container = document.getElementById('map'),
+      mapOption = {
+        center: new kakao.maps.LatLng(state.center.lat, state.center.lng),
+        level: 5
+      };
 
-      let new_location = [...location];
-      new_location.unshift(searchPlace); //검색한 주소를 새로운 배열에 선언
-      setLocation(new_location);         // 검색 될 때 마다 값 바꿈
+    let map = new kakao.maps.Map(container, mapOption);
 
-      let coords = new kakao.maps.LatLng(lat, lng);
+    let new_location = [...location];
+    new_location.unshift(searchPlace); //검색한 주소를 새로운 배열에 선언
+    setLocation(new_location);         // 검색 될 때 마다 값 바꿈
 
-      // console.log("새로 검색한 좌표", lat, lng);
+    let coords = new kakao.maps.LatLng(lat, lng);
 
-      let new_latlng = [...latlng];
-      new_latlng.unshift([Number(lat), Number(lng)]); //검색한 주소의 좌표
-      setLatlng(new_latlng);
+    // console.log("새로 검색한 좌표", lat, lng);
 
-      let new_Name = [...Name];
-      new_Name.unshift([name]);
-      setName(new_Name);
+    let new_latlng = [...latlng];
+    new_latlng.unshift([Number(lat), Number(lng)]); //검색한 주소의 좌표
+    setLatlng(new_latlng);
 
-      let searchMarker = new kakao.maps.Marker({
-        map: map,
-        position: coords
-      });
+    let new_Name = [...Name];
+    new_Name.unshift([name]);
+    setName(new_Name);
 
-      let infowindow = new kakao.maps.InfoWindow({
-        content: `<div style="width:150px;text-align:center;padding:6px 0;">` + name + `</div>`,
-        clickable: true
-      });
+    let searchMarker = new kakao.maps.Marker({
+      map: map,
+      position: coords
+    });
 
-      infowindow.open(map, searchMarker);
+    let infowindow = new kakao.maps.InfoWindow({
+      content: `<div style="width:150px;text-align:center;padding:6px 0;">` + name + `</div>`,
+      clickable: true
+    });
 
-      map.setCenter(coords);
-    }
+    infowindow.open(map, searchMarker);
+
+    map.setCenter(coords);
+    // }
 
   }, [searchPlace, lat, lng, name])
 
@@ -119,7 +125,8 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
       setStation(newStation);
       console.log("선택 지하철 정보", newStation);
 
-      // displayPath(newStation)
+      displayPath(newStation)
+
       return newStation
     } catch (error) {
       console.error('Error making HTTP request:', error.message);
@@ -149,10 +156,41 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
 
       stationMarker.setMap(map);
 
-      // var infowindowStation = new kakao.maps.InfoWindow({
-      //   content: '<div style="width:150px;text-align:center;padding:6px 0;">' + newStation[0][i].stationName + '</div>',
-      // });
-      // infowindowStation.open(map, stationMarker);
+      var infowindowStation = new kakao.maps.InfoWindow({
+        content: '<div style="width:150px;text-align:center;padding:6px 0;">' + newStation[0][i].stationName + '</div>',
+      });
+
+      (function (stationMarker, infowindowStation) {
+        // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다 
+        kakao.maps.event.addListener(stationMarker, 'mouseover', function () {
+          infowindowStation.open(map, stationMarker);
+        });
+
+        // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
+        kakao.maps.event.addListener(stationMarker, 'mouseout', function () {
+          infowindowStation.close();
+        });
+      })(stationMarker, infowindowStation);
+    }
+
+    let imageSrcStartMarker = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"
+
+    for (let i = 0; i < addLatlng.length; i++) {    // 출발지 마커
+      let imageSizeStartMarker = new kakao.maps.Size(24, 35);
+      let markerImageStart = new kakao.maps.MarkerImage(imageSrcStartMarker, imageSizeStartMarker);
+      var startMarker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(addLatlng[i][0], addLatlng[i][1]),
+        image: markerImageStart,
+        clickable: true
+      });
+
+      startMarker.setMap(map);
+
+      var infowindowStart = new kakao.maps.InfoWindow({
+        content: '<div style="width:150px;text-align:center;padding:6px 0;">' + addName[i] + '</div>',
+      });
+      infowindowStart.open(map, startMarker);
     }
   }
 
@@ -160,7 +198,7 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
     let mapContainer = document.getElementById('map'), // 지도를 표시할 div 
       mapOption = {
         center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-        level: 9 // 지도의 확대 레벨
+        level: 8 // 지도의 확대 레벨
       };
 
     let map = new kakao.maps.Map(mapContainer, mapOption),
@@ -231,26 +269,9 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
               .filter((region) => region.regionName === regionName[0])
               .map((region) => region.info);
 
-            // polygon.setOptions({ zIndex: 1 });
-
             let sta = await findEndPoint(regionName, regionStation) // 중간 장소 찾기 버튼
 
             console.log(sta)
-
-            let imageSrcStationMarker = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
-
-            for (let i = 0; i < sta[0].length; i++) {    // 지하철 마커
-              let imageSizeStationMarker = new kakao.maps.Size(35, 40);
-              let markerImageStation = new kakao.maps.MarkerImage(imageSrcStationMarker, imageSizeStationMarker);
-              var stationMarker = new kakao.maps.Marker({
-                map: map,
-                position: new kakao.maps.LatLng(sta[0][i].y, sta[0][i].x),
-                image: markerImageStation,
-                clickable: true
-              });
-
-              stationMarker.setMap(map);
-            }
           })
         });
 
