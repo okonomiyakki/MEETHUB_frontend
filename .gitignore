@@ -24,3 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 
 /src/components/map/landingMap/seoul.json
+/src/components/map/landingMap/station.json

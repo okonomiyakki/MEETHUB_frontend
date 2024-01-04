@@ -3,6 +3,7 @@ import styles from './landingMap.module.scss';
 import axios from 'axios';
 import { generateCenter } from '../../../utils/generateCenter';
 import seoulPolyLine from './seoul.json'
+import regionStationInfo from './station.json'
 
 const { kakao } = window;
 
@@ -13,6 +14,9 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
   let [addLatlng, setAddLatlng] = useState([]);     // 추가 출발지 좌표
   let [Name, setName] = useState([]);               // 입력 출발지 이름
   let [addName, setAddName] = useState([]);         // 추가 출발지 이름
+  let [region, setRegion] = useState([]);       // 선택 지역구 이름
+  let [station, setStation] = useState([]); // 선택 지하철 정보
+
 
   useEffect(() => {
     if (lat) {
@@ -76,7 +80,7 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
     }
 
     else {
-      alert('장소 클릭 후 눌러주세요.');
+      alert('출발 장소를 클릭 후 눌러주세요.');
       return;
     }
   }
@@ -91,31 +95,75 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
     setAddName(updatedName);
   }
 
-  const findEndPoint = async () => {
+  const findEndPoint = async (regionName, regionStation) => {
     try {
       const data = {
-        startLatlng: addLatlng,
-        centerLat: generateCenter(addLatlng).centerLat,
-        centerLng: generateCenter(addLatlng).centerLng
+        regionName,
+        regionStation,
+        startLatlng: addLatlng
+        // centerLat: generateCenter(addLatlng).centerLat,
+        // centerLng: generateCenter(addLatlng).centerLng
       }
 
       const response = await axios.post('http://localhost:5500/routes', data);
 
       console.log('Server response:', response.data);
 
+      let newRegion = [...region];
+      newRegion.push(response.data.regionName[0]);
+      setRegion(newRegion);
+      console.log("선택 지역구 이름", newRegion);
+
+      let newStation = [...station];
+      newStation.push(response.data.regionStation[0]);
+      setStation(newStation);
+      console.log("선택 지하철 정보", newStation);
+
+      // displayPath(newStation)
+      return newStation
     } catch (error) {
       console.error('Error making HTTP request:', error.message);
     }
   };
 
+  const displayPath = (newStation) => {
+    let mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+      mapOption = {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+        level: 8
+      };
+
+    let map = new kakao.maps.Map(mapContainer, mapOption);
+
+    let imageSrcStationMarker = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
+
+    for (let i = 0; i < newStation[0].length; i++) {    // 지하철 마커
+      let imageSizeStationMarker = new kakao.maps.Size(35, 40);
+      let markerImageStation = new kakao.maps.MarkerImage(imageSrcStationMarker, imageSizeStationMarker);
+      var stationMarker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(newStation[0][i].y, newStation[0][i].x),
+        image: markerImageStation,
+        clickable: true
+      });
+
+      stationMarker.setMap(map);
+
+      // var infowindowStation = new kakao.maps.InfoWindow({
+      //   content: '<div style="width:150px;text-align:center;padding:6px 0;">' + newStation[0][i].stationName + '</div>',
+      // });
+      // infowindowStation.open(map, stationMarker);
+    }
+  }
+
   const submitStartPoints = () => {
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    let mapContainer = document.getElementById('map'), // 지도를 표시할 div 
       mapOption = {
         center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
         level: 9 // 지도의 확대 레벨
       };
 
-    var map = new kakao.maps.Map(mapContainer, mapOption),
+    let map = new kakao.maps.Map(mapContainer, mapOption),
       customOverlay = new kakao.maps.CustomOverlay({}),
       infowindow = new kakao.maps.InfoWindow({ removable: false });
 
@@ -176,10 +224,55 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
 
           let findEndPointBtn = document.getElementById(styles.addBtn)
 
-          findEndPointBtn.addEventListener('click', function () {
-            findEndPoint()
+          findEndPointBtn.addEventListener('click', async function () {
+            const regionName = [area.name]
+
+            const regionStation = regionStationInfo.station
+              .filter((region) => region.regionName === regionName[0])
+              .map((region) => region.info);
+
+            // polygon.setOptions({ zIndex: 1 });
+
+            let sta = await findEndPoint(regionName, regionStation) // 중간 장소 찾기 버튼
+
+            console.log(sta)
+
+            let imageSrcStationMarker = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
+
+            for (let i = 0; i < sta[0].length; i++) {    // 지하철 마커
+              let imageSizeStationMarker = new kakao.maps.Size(35, 40);
+              let markerImageStation = new kakao.maps.MarkerImage(imageSrcStationMarker, imageSizeStationMarker);
+              var stationMarker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(sta[0][i].y, sta[0][i].x),
+                image: markerImageStation,
+                clickable: true
+              });
+
+              stationMarker.setMap(map);
+            }
           })
         });
+
+        let imageSrcStartMarker = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"
+
+        for (let i = 0; i < addLatlng.length; i++) {    // 출발지 마커
+          let imageSizeStartMarker = new kakao.maps.Size(24, 35);
+          let markerImageStart = new kakao.maps.MarkerImage(imageSrcStartMarker, imageSizeStartMarker);
+          var startMarker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(addLatlng[i][0], addLatlng[i][1]),
+            image: markerImageStart,
+            clickable: true
+          });
+
+          startMarker.setMap(map);
+
+          var infowindowStart = new kakao.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">' + addName[i] + '</div>',
+          });
+          infowindowStart.open(map, startMarker);
+        }
       });
     }
 
@@ -191,6 +284,8 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
     });
 
     displayArea(areas);
+
+    // alert('모임을 원하시는 지역구를 클릭해주세요.');
   }
 
   return (
@@ -203,7 +298,7 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
           <div className={styles.addOption}>
             {/* <button type="button" onClick={() => reload()}>다시하기</button> */}
             {/* <button id={styles.addBtn} className={styles.addBtn} onClick={() => findEndPoint()}>중간 장소 찾기</button> */}
-            <button className={styles.addBtn} onClick={() => addStartPoints(searchPlace)}>출발지 추가</button>
+            <button className={styles.addBtn} onClick={() => addStartPoints(searchPlace)}>출발지 추가하기</button>
             {/* <hr></hr> */}
             {/* <button className={styles.addLine}>출발지 목록</button> */}
             <div>{addName.map((a, i) => (
@@ -215,9 +310,9 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
             <hr></hr>
             {/* <button className={styles.addBtn} onClick={() => submitStartPoints()}>출발지 저장</button> */}
             {addName.length >= 2 ? (
-              <button className={styles.addBtn} onClick={() => submitStartPoints()}>출발지 저장</button>
+              <button className={styles.addBtn} onClick={() => submitStartPoints()}>원하는 지역구 선택하러 가기</button>
             ) : (
-              <button className={`${styles.addBtn} ${styles.disabledBtn}`} disabled>출발지 저장</button>
+              <button className={`${styles.addBtn} ${styles.disabledBtn}`} disabled>출발지를 두 개 이상 추가하세요</button>
             )}
             {/* <button id={styles.addBtn} className={styles.addBtn} onClick={() => findEndPoint()}>중간 장소 찾기</button> */}
           </div>
