@@ -120,6 +120,8 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
 
       const addOptionDiv = document.getElementsByClassName(styles.addOption)[0]
       const findEndPointBtn = document.getElementById(styles.addBtn)
+      const addStartPointBtn = document.getElementById(styles.startPointBtn)
+      const deleteStartPointBtn = document.getElementsByClassName(styles.deleteBtn)
 
       findEndPointBtn.disabled = true
       findEndPointBtn.style.backgroundColor = 'grey'
@@ -127,12 +129,16 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
       findEndPointBtn.style.boxShadow = 'none'
       findEndPointBtn.style.cursor = 'not-allowed'
 
+      addStartPointBtn.style.display = 'none'
+      for (let i = 0; i < deleteStartPointBtn.length; i++) {
+        deleteStartPointBtn[i].style.display = 'none'
+      }
 
       for (let i = 0; i < response.data.stationList.length; i++) {
         let selectBtn = document.createElement('button')
 
-        selectBtn.innerHTML = `${response.data.stationList[i].stationName}역 보기`
-        selectBtn.id = styles.addBtn
+        selectBtn.innerHTML = `${response.data.stationList[i].stationName}역에서 만나기`
+        selectBtn.id = styles.findBtn
         selectBtn.className = styles.addBtn
         selectBtn.style.backgroundColor = 'rgb(233, 171, 56);'
 
@@ -145,6 +151,7 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
         selectBtn.addEventListener("click", () => newDisplayPath(stationCoord, stationName))
       }
     } catch (error) {
+      console.log(error)
       console.error('Error making HTTP request:', error.message);
     }
   };
@@ -421,9 +428,9 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
             {/* <button id={styles.addBtn} className={styles.addBtn} onClick={() => findEndPoint()}>중간 장소 찾기</button> */}
             {/* <button className={styles.addBtn} onClick={() => addStartPoints(searchPlace)}>출발지 추가하기</button> */}
             {addName.length < 5 ? (
-              <button className={styles.addBtn} onClick={() => addStartPoints(searchPlace)}>출발지 추가하기</button>
+              <button id={styles.startPointBtn} className={styles.addBtn} onClick={() => addStartPoints(searchPlace)}>출발지 추가하기</button>
             ) : (
-              <button className={`${styles.addBtn} ${styles.disabledBtn}`} disabled>출발지 개수는 최대 5개 입니다</button>
+              <button id={styles.startPointBtn} className={`${styles.addBtn} ${styles.disabledBtn}`} disabled>출발지 개수는 최대 5개 입니다</button>
             )}
             {/* <hr></hr> */}
             {/* <button className={styles.addLine}>출발지 목록</button> */}
@@ -438,9 +445,9 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
             {addName.length >= 3 ? (
               <button id={styles.addBtn} className={styles.addBtn} onClick={() => {
                 alert(`
-                중간 지점 탐색 소요시간은 약 5초 입니다.
-                확인 버튼을 누를 시 탐색이 시작됩니다.
-                기다려주세요.`
+          중간 지점 탐색 소요시간은 약 5초 ~ 10초 사이 입니다.
+          확인 버튼을 누를 시 탐색이 시작됩니다.
+          기다려주세요.`
                 )
                 newFindEndPoint()
               }}>중간 지점 찾기</button>
