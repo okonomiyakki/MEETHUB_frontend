@@ -10,7 +10,7 @@ export function HomeBody(props) {
           <div className={styles.title}>Meet Hub</div>
           {/* <p>모임 인원이 많을 때,</p>
           <p>어디서 만날지 고민될 때</p> */}
-          <p>모임을 장소 추천 서비스</p>
+          <p>모임 장소 추천 서비스</p>
         </div>
 
         <div>

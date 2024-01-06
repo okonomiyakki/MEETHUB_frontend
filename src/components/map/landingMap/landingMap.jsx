@@ -114,7 +114,7 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
 
       console.log('Server response:', response.data);
 
-      newDisplayPath(response.data.firstStationCoord, response.data.firstStationName)
+      newDisplayPath(response.data.firstStationCoord, response.data.firstStationName, response.data.stationPathList, 0)
 
       alert('탐색이 완료되었습니다.')
 
@@ -148,7 +148,7 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
         let stationName = response.data.stationList[i].stationName
 
 
-        selectBtn.addEventListener("click", () => newDisplayPath(stationCoord, stationName))
+        selectBtn.addEventListener("click", () => newDisplayPath(stationCoord, stationName, response.data.stationPathList, i))
       }
     } catch (error) {
       console.log(error)
@@ -188,7 +188,7 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
   //   }
   // };
 
-  const newDisplayPath = (stationCoord, stationName) => {
+  const newDisplayPath = (stationCoord, stationName, stationPathList, num) => {
     let mapContainer = document.getElementById('map'), // 지도를 표시할 div 
       mapOption = {
         center: new kakao.maps.LatLng(stationCoord[1], stationCoord[0]), // 지도의 중심좌표
@@ -212,7 +212,10 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
       startMarker.setMap(map);
 
       var infowindowStart = new kakao.maps.InfoWindow({
-        content: '<div style="width:150px;text-align:center;padding:6px 0;">' + addName[i] + '</div>',
+        content: `
+        <div style="width: 150px; text-align: center; padding: 6px 0;">${addName[i]}</div>
+        <div style="width: 150px; text-align: center; padding: 6px 0; font-weight: bold; color: red;">${stationPathList[num][i].result.path[0].info.totalTime}분 소요</div>
+        `,
       });
 
       infowindowStart.open(map, startMarker);
@@ -232,7 +235,10 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
     stationMarker.setMap(map);
 
     var infowindowStation = new kakao.maps.InfoWindow({
-      content: '<div style="width:150px;text-align:center;padding:6px 0;">' + stationName + '역</div>',
+      content: `
+      <div style="width: 150px; text-align: center; padding: 6px 0; font-weight: bold; color: blue;">모임 장소</div>
+      <div style="width: 150px; text-align: center; padding: 6px 0;">${stationName} 역</div>
+      `,
     });
 
     infowindowStation.open(map, stationMarker);
