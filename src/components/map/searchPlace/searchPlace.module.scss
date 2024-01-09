@@ -1,12 +1,12 @@
-#searchContainer {
-  position: absolute;
-  top: 100;
-  /* 조정할 필요에 따라 값을 변경 */
-  right: 10px;
-  /* 조정할 필요에 따라 값을 변경 */
-  z-index: 2;
-  /* 다른 컴포넌트 위에 올라가도록 설정 */
-}
+// #searchContainer {
+//   position: absolute;
+//   top: 100;
+//   /* 조정할 필요에 따라 값을 변경 */
+//   right: 10px;
+//   /* 조정할 필요에 따라 값을 변경 */
+//   z-index: 2;
+//   /* 다른 컴포넌트 위에 올라가도록 설정 */
+// }
 
 #searchContainer {
   display: flex;

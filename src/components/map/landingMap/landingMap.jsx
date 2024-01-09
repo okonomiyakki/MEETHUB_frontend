@@ -424,7 +424,7 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
 
   return (
     <>
-      <div id="map" style={{ width: "1900px", height: "845px", position: 'relative', overflow: 'hidden' }}>
+      <div id="map" style={{ width: "100%", height: "845px", position: 'relative', overflow: 'hidden' }}>
       </div>
 
       <div id={styles.addWrap}>
@@ -450,11 +450,8 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
             {/* <button className={styles.addBtn} onClick={() => submitStartPoints()}>출발지 저장</button> */}
             {addName.length >= 3 ? (
               <button id={styles.addBtn} className={styles.addBtn} onClick={() => {
-                alert(`
-          중간 지점 탐색 소요시간은 약 5초 ~ 10초 사이 입니다.
-          확인 버튼을 누를 시 탐색이 시작됩니다.
-          기다려주세요.`
-                )
+                alert(`중간 지점 탐색에 다소 시간이 소요될 수 있습니다.
+확인 버튼을 누르면 탐색이 시작됩니다.`)
                 newFindEndPoint()
               }}>중간 지점 찾기</button>
             ) : (
