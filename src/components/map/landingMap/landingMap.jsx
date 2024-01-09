@@ -219,6 +219,16 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
       });
 
       infowindowStart.open(map, startMarker);
+
+      (function (startMarker, infowindowStart) {
+        kakao.maps.event.addListener(startMarker, 'click', function () {
+          infowindowStart.open(map, startMarker);
+        });
+
+        kakao.maps.event.addListener(startMarker, 'rightclick', function () {
+          infowindowStart.close();
+        });
+      })(startMarker, infowindowStart);
     }
 
     let imageSrcStationMarker = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
