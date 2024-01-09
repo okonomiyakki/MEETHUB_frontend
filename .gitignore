@@ -23,5 +23,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/src/components/map/landingMap/seoul.json
-/src/components/map/landingMap/station.json
+# dotenv environment variables file
+.env
+.env.local
+.env.development.local
+.env.development
+.env.production.local
+.env.production
+.env.test.local
+.env.test
+.env*

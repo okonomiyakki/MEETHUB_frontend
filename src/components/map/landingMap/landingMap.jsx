@@ -5,6 +5,8 @@ import { generateCenter } from '../../../utils/generateCenter';
 
 const { kakao } = window;
 
+const API_URL = process.env.REACT_APP_API_URL
+
 export function LandingMap({ searchPlace, lat, lng, name }) {
   let [location, setLocation] = useState([]);       // 입력 출발지 주소
   let [addLocation, setAddLocation] = useState([]); // 추가 출발지 주소
@@ -106,7 +108,7 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
         centerLng: generateCenter(addLatlng).centerLng
       }
 
-      const response = await axios.post('http://localhost:5500/routes', data);
+      const response = await axios.post(`${API_URL}/routes`, data);
 
       console.log('Server response:', response.data);
 
