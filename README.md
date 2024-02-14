@@ -43,7 +43,7 @@
 -   Kakao Map API KEY를 발급받으시면, 로컬에서 사용 가능합니다.
 -   [Kakao Maps API 홈페이지 바로가기](https://apis.map.kakao.com/web/)
 
-## [Client] 환경 변수 설정
+## [Client] 로컬 환경 변수 설정
 
 ```bash
 touch .env.development
@@ -52,7 +52,7 @@ touch .env.development
 ```
 /.env.development
 
-REACT_APP_API_URL={서버 localhost 주소}
+REACT_APP_API_URL={http://localhost:서버포트}
 
 REACT_APP_KAKAOMAP_KEY={카카오맵 API 키}
 
