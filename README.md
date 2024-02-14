@@ -16,8 +16,7 @@
 
 ### 1. 키워드로 출발지 검색
 
-![키워드검색](https://github.com/okonomiyakki/MEETHUB_frontend/assets/83577128/01d4270f-bb15-4a16-8456-1fd362d003b1)
-![키워드검색2](https://github.com/okonomiyakki/MEETHUB_frontend/assets/83577128/73902cec-859f-4b69-9b59-75144658830a)
+![키워드검색](https://github.com/okonomiyakki/MEETHUB_frontend/assets/83577128/3ab78fef-72b9-400c-a4a3-66674b2b3980)
 
 -   `키워드` 를 입력하여 원하는 출발지를 쉽게 찾을 수 있습니다.
 
@@ -33,21 +32,33 @@
 
 ### 3. 출발지 추가
 
+![출발지 추가](https://github.com/okonomiyakki/MEETHUB_frontend/assets/83577128/3564b7a1-8122-4882-8695-a815b1398724)
+
 -   `출발지 추가하기` 버튼을 클릭하여, 검색한 장소를 출발지로 지정합니다.
 
         -  장소 검색 결과 목록에서 원하는 출발지를 클릭 후, '출발지 추가하기' 버튼을 눌러 출발지를 추가합니다.
 
         -  추가할 수 있는 출발지의 최대 개수는 5개 입니다.
 
+        -  잘못 추가한 출발지는 'x' 버튼을 눌러 출발지 지정 목록에서 제외할 수 있습니다.
+
 ### 4. 중간 지점 탐색
+
+![중간 지점 탐색](https://github.com/okonomiyakki/MEETHUB_frontend/assets/83577128/9b333efd-dc54-46dc-82c3-75fbc1b3ee74)
 
 -   `중간 지점 찾기` 버튼을 클릭하여, 중간 지점으로 판단되는 지하철역을 알려드립니다.
 
-        - 추천된 지하철역이 지도에 포커싱되며, 각 출발지들과 함께 마커로 위치가 표시됩니다.
+        - 추천된 중간 지점 지하철역이 지도에 포커싱되며, 각 출발지들과 함께 마커로 위치가 표시됩니다.
 
-        - 반환되는 지하철역의 개수는 최대 4개 이며, 클릭하여 개별 조회가 가능합니다.
+![역에서만나기](https://github.com/okonomiyakki/MEETHUB_frontend/assets/83577128/ba8b991b-72c8-4a10-95e2-b92aff86b8d5)
+
+-   `(역이름)에서 만나기` 버튼을 클릭하여, 동시에 추가적으로 반환된 중간 지점 지하철역을 확인 할 수 있습니다.
+
+          - 반환되는 중간 지점 지하철역의 개수는 최대 4개 이며, 클릭 시 개별적인 조회가 가능합니다.
 
 ### 5. 소요시간 표시
+
+![소요시간](https://github.com/okonomiyakki/MEETHUB_frontend/assets/83577128/ad4929ff-4230-4946-9349-3b226ec00521)
 
 -   각 출발지로부터 추천된 중간 지점까지의 소요시간을 알려드립니다.
 
