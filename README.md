@@ -1,12 +1,42 @@
-# 중간 지점 추천 서비스 [밋허브]
+# 밋허브 - 중간 지점 추천 서비스 [Client]
 
 ---
 
-## v.3.1.0
+## Frontend - v.3.1.0
 
 > 수도권을 한정으로 서비스합니다. <br>
 > 대중교통을 기준으로 중간 지점을 계산합니다.<br>
 > 제공하는 중간 지점은 인근 지하철역입니다.
+
+## 사용 기술
+
+<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> 
+<img src="https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=Sass&logoColor=white"/>
+<img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white"/>
+
+## 주요 파일
+
+-   src/components/map/searchPlace/`searchPlace.jsx`
+
+    -   출발지 키워드 검색
+    -   현재위치 검색
+
+-   src/components/map/landingMap/`landingMap.jsx`
+
+    -   출발지 정보로 Server에 요청
+    -   응답 받은 중간 지점 탐색 결과를 가공하여 화면에 표시
+
+-   src/utils/`coordsHandler.jsx`
+
+    -   좌표 변환 함수
+    -   출발지 좌표 리스트 정렬 함수
+    -   무게중심 계산 함수
+
+-   src/utils/`generateCenter.jsx`
+    -   출발지 좌표 리스트를 입력받고 가공하여 무게중심 좌표 생성
+
+---
 
 ## 서비스 목적
 
