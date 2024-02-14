@@ -101,20 +101,24 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
   }
 
   const findEndPoint = async () => {
-    try {
-      const data = {
-        startLatlng: addLatlng,
-        centerLat: generateCenter(addLatlng).centerLat,
-        centerLng: generateCenter(addLatlng).centerLng
-      }
 
-      const response = await axios.post(`${API_URL}/routes`, data);
+    const loading = document.getElementById(styles.loading);
+    const disableWrap = document.getElementById(styles.disableWrap);
+
+    loading.style.display = 'flex';
+    disableWrap.style.display = 'flex';
+
+    const data = {
+      startLatlng: addLatlng,
+      centerLat: generateCenter(addLatlng).centerLat,
+      centerLng: generateCenter(addLatlng).centerLng
+    }
+
+    axios.post(`${API_URL}/routes`, data).then((response) => {
 
       console.log('Server response:', response.data);
 
       displayPath(response.data.firstStationCoord, response.data.firstStationName, response.data.stationPathList, 0)
-
-      alert('탐색이 완료되었습니다.')
 
       const addOptionDiv = document.getElementsByClassName(styles.addOption)[0]
       const findEndPointBtn = document.getElementById(styles.addBtn)
@@ -148,17 +152,21 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
 
         selectBtn.addEventListener("click", () => displayPath(stationCoord, stationName, response.data.stationPathList, i))
       }
-    } catch (error) {
+    }).catch((error) => {
       console.log(error)
       console.error('Error making HTTP request:', error.message);
-    }
+    }).finally(() => {
+      loading.style.display = 'none';
+      disableWrap.style.display = 'none';
+    });
+
   };
 
   const displayPath = (stationCoord, stationName, stationPathList, num) => {
     let mapContainer = document.getElementById('map'),
       mapOption = {
         center: new kakao.maps.LatLng(stationCoord[1], stationCoord[0]),
-        level: 8
+        level: 7
       };
 
     let map = new kakao.maps.Map(mapContainer, mapOption);
@@ -242,8 +250,6 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
             <hr></hr>
             {addName.length >= 3 ? (
               <button id={styles.addBtn} className={styles.addBtn} onClick={() => {
-                alert(`중간 지점 탐색에 다소 시간이 소요될 수 있습니다.
-확인 버튼을 누르면 탐색이 시작됩니다.`)
                 findEndPoint()
               }}>중간 지점 찾기</button>
             ) : (
@@ -252,6 +258,19 @@ export function LandingMap({ searchPlace, lat, lng, name }) {
           </div>
         </div>
       </div>
+
+      <div id={styles.loading} className={styles.spinner}>
+        <div className={`${styles.dot} ${styles.dot1}`}></div>
+        <div className={`${styles.dot} ${styles.dot2}`}></div>
+        <div className={`${styles.dot} ${styles.dot3}`}></div>
+        <div className={`${styles.dot} ${styles.dot4}`}></div>
+        <div className={`${styles.dot} ${styles.dot5}`}></div>
+        <div className={`${styles.dot} ${styles.dot6}`}></div>
+        <div className={`${styles.dot} ${styles.dot7}`}></div>
+        <div className={`${styles.dot} ${styles.dot8}`}></div>
+      </div>
+
+      <div id={styles.disableWrap}></div>
     </>
   )
 }
