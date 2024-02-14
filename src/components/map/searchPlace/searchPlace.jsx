@@ -15,8 +15,6 @@ export function SearchPlace() {
   let [lng, setLng] = useState([]);
 
   useEffect(() => {
-    // let sta_wrap = document.querySelector('#sta_wrap');
-    // sta_wrap.style.display = "none";
 
     let container = document.getElementById('map'),
       mapOption = {
