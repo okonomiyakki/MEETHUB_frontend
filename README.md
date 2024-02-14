@@ -17,6 +17,7 @@
 ### 1. 키워드로 출발지 검색
 
 ![키워드검색](https://github.com/okonomiyakki/MEETHUB_frontend/assets/83577128/01d4270f-bb15-4a16-8456-1fd362d003b1)
+![키워드검색2](https://github.com/okonomiyakki/MEETHUB_frontend/assets/83577128/73902cec-859f-4b69-9b59-75144658830a)
 
 -   `키워드` 를 입력하여 원하는 출발지를 쉽게 찾을 수 있습니다.
 
