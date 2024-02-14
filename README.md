@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# 중간 지점 추천 서비스 [밋허브]
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+## v.3.1.0
 
-In the project directory, you can run:
+> 수도권을 한정으로 서비스합니다. <br>
+> 대중교통을 기준으로 중간 지점을 계산합니다.<br>
+> 제공하는 중간 지점은 인근 지하철역입니다.
 
-### `npm start`
+## 서비스 목적
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+-   거리, 비용, 소요 시간 을 바탕으로 모임 인원 모두에게 동등한 모임 장소를 제공함으로써, <br>모임 장소를 찾는 시간을 절약합니다.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 서비스 주요 기능
 
-### `npm test`
+### 1. 키워드로 출발지 검색
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![키워드검색](https://github.com/okonomiyakki/MEETHUB_frontend/assets/83577128/01d4270f-bb15-4a16-8456-1fd362d003b1)
 
-### `npm run build`
+-   `키워드` 를 입력하여 원하는 출발지를 쉽게 찾을 수 있습니다.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+          -  키워드 입력 시, 해당 키워드와 관련도가 높은 순으로 장소 목록이 반환됩니다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+          -  해당 목록에서 희망하는 출발지를 클릭하면, 해당 장소가 지도에 포커싱 됩니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. 현재위치 검색
 
-### `npm run eject`
+-   버튼을 클릭하여 현재의 위치를 조회합니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+        -  현재의 위치정보가 지도에 포커싱 됩니다.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 3. 출발지 추가
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+-   `출발지 추가하기` 버튼을 클릭하여, 검색한 장소를 출발지로 지정합니다.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+        -  장소 검색 결과 목록에서 원하는 출발지를 클릭 후, '출발지 추가하기' 버튼을 눌러 출발지를 추가합니다.
 
-## Learn More
+        -  추가할 수 있는 출발지의 최대 개수는 5개 입니다.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 4. 중간 지점 탐색
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+-   `중간 지점 찾기` 버튼을 클릭하여, 중간 지점으로 판단되는 지하철역을 알려드립니다.
 
-### Code Splitting
+        - 추천된 지하철역이 지도에 포커싱되며, 각 출발지들과 함께 마커로 위치가 표시됩니다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+        - 반환되는 지하철역의 개수는 최대 4개 이며, 클릭하여 개별 조회가 가능합니다.
 
-### Analyzing the Bundle Size
+### 5. 소요시간 표시
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+-   각 출발지로부터 추천된 중간 지점까지의 소요시간을 알려드립니다.
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+        - 추천된 지하철역까지 최적의 경로로 계산된 소요시간을 반환합니다.
